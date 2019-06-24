@@ -6,16 +6,19 @@ import (
 	"golang.org/x/net/idna"
 )
 
-const (
-	ianaURL = "http://data.iana.org/TLD/tlds-alpha-by-domain.txt"
-)
+//go:generate go run cmd/tld-generator/main.go
 
 // TLD represents a top level domain
 type TLD string
 
 // String returns the string value for a TLD.
 func (t TLD) String() string {
-	return string(t)
+	return strings.ToUpper(string(t))
+}
+
+// LowerString returns the string value for a TLD as lowercase.
+func (t TLD) LowerString() string {
+	return strings.ToLower(string(t))
 }
 
 // AsUnicode returns the unicode string for a TLD.

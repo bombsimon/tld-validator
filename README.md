@@ -1,4 +1,4 @@
-# Go TLD
+# Go TLD Validator
 
 A proper way to work with top level domains by validating towards
 [IANA](https://data.iana.org/TLD/tlds-alpha-by-domain.txt) TLD list. Whenever a
@@ -14,12 +14,21 @@ using `FromDomanName()`.
 
 ## Usage
 
-```go
+A generated file with all current TLDs from IANA can be used for offlien
+validation. To update the list run `go generate ./...`.
 
-validator := NewValidator()
+```go
 tld := FromDomanName("www.github.कॉम")
 
+// Offline validation.
 if !tld.IsValid() {
+    fmt.Printf("Invalid TLD: %s\n", tld.AsPunycode())
+}
+
+// Online validation.
+validator := NewValidator()
+
+if !validator.IsValid(tld) {}
     fmt.Printf("Invalid TLD: %s\n", tld.AsPunycode())
 }
 ```

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestValidator_IsValid(t *testing.T) {
+func TestIANA_IsValid(t *testing.T) {
 	cases := []struct {
 		in    interface{}
 		valid bool
@@ -48,11 +48,11 @@ func TestValidator_IsValid(t *testing.T) {
 		},
 	}
 
-	validator := NewValidator()
+	iana := NewIANA()
 
 	for i, tc := range cases {
 		t.Run(fmt.Sprintf("test case %d", i+1), func(t *testing.T) {
-			valid := validator.IsValid(tc.in)
+			valid := iana.IsValid(tc.in)
 
 			if valid != tc.valid {
 				t.Fail()
