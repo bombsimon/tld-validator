@@ -26,9 +26,9 @@ if !tld.IsValid() {
 }
 
 // Online validation.
-validator := NewValidator()
+iana := NewIANA()
 
-if !validator.IsValid(tld) {}
+if !iana.IsValid(tld) {}
     fmt.Printf("Invalid TLD: %s\n", tld.AsPunycode())
 }
 ```
