@@ -76,8 +76,6 @@ func createFile(args map[string]interface{}) {
 		panic(err)
 	}
 
-	fmt.Println(buf.String())
-
 	fileBytes, err := format.Source(buf.Bytes())
 	if err != nil {
 		panic(err)

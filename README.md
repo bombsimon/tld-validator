@@ -14,7 +14,7 @@ using `FromDomanName()`.
 
 ## Usage
 
-A generated file with all current TLDs from IANA can be used for offlien
+A generated file with all current TLDs from IANA can be used for offline
 validation. To update the list run `go generate ./...`.
 
 ```go
