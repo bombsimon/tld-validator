@@ -40,15 +40,15 @@ func TestTLD_AsPunycode(t *testing.T) {
 		out string
 	}{
 		{
-			in:  TLD("se"),
+			in:  FromString("se"),
 			out: "se",
 		},
 		{
-			in:  TLD("XN--VERMGENSBERATER-CTB"),
+			in:  FromString("XN--VERMGENSBERATER-CTB"),
 			out: "xn--vermgensberater-ctb",
 		},
 		{
-			in:  TLD("vermögensberater"),
+			in:  FromString("vermögensberater"),
 			out: "xn--vermgensberater-ctb",
 		},
 	}
@@ -71,19 +71,19 @@ func TestTLD_FromDomainName(t *testing.T) {
 	}{
 		{
 			in:  "",
-			out: TLD(""),
+			out: FromString(""),
 		},
 		{
 			in:  ".",
-			out: TLD(""),
+			out: FromString(""),
 		},
 		{
 			in:  "github.com",
-			out: TLD("com"),
+			out: FromString("com"),
 		},
 		{
 			in:  "www.my-blog.xn--vermgensberater-ctb",
-			out: TLD("xn--vermgensberater-ctb"),
+			out: FromString("xn--vermgensberater-ctb"),
 		},
 	}
 
@@ -105,12 +105,12 @@ func TestTLD_Strings(t *testing.T) {
 		outL string
 	}{
 		{
-			in:   TLD("com"),
+			in:   FromString("com"),
 			outU: "COM",
 			outL: "com",
 		},
 		{
-			in:   TLD("xn--vermgensberater-ctb"),
+			in:   FromString("xn--vermgensberater-ctb"),
 			outU: "XN--VERMGENSBERATER-CTB",
 			outL: "xn--vermgensberater-ctb",
 		},
@@ -135,23 +135,23 @@ func TestTLD_IsValid(t *testing.T) {
 		valid bool
 	}{
 		{
-			in:    TLD("apa"),
+			in:    FromString("apa"),
 			valid: false,
 		},
 		{
-			in:    TLD("APA"),
+			in:    FromString("APA"),
 			valid: false,
 		},
 		{
-			in:    TLD("se"),
+			in:    FromString("se"),
 			valid: true,
 		},
 		{
-			in:    TLD("SE"),
+			in:    FromString("SE"),
 			valid: true,
 		},
 		{
-			in:    TLD("sE"),
+			in:    FromString("sE"),
 			valid: true,
 		},
 		{
@@ -159,39 +159,39 @@ func TestTLD_IsValid(t *testing.T) {
 			valid: true,
 		},
 		{
-			in:    TLD(SE.LowerString()),
+			in:    FromString(SE.LowerString()),
 			valid: true,
 		},
 		{
-			in:    TLD("xn--apa-ctb"),
+			in:    FromString("xn--apa-ctb"),
 			valid: false,
 		},
 		{
-			in:    TLD("xn--vermgensberater-ctb"),
+			in:    FromString("xn--vermgensberater-ctb"),
 			valid: true,
 		},
 		{
-			in:    TLD("XN--VERMGENSBERATER-CTB"),
+			in:    FromString("XN--VERMGENSBERATER-CTB"),
 			valid: true,
 		},
 		{
-			in:    TLD("XN--vermgensberater-CTB"),
+			in:    FromString("XN--vermgensberater-CTB"),
 			valid: true,
 		},
 		{
-			in:    TLD("vermögensberater"),
+			in:    FromString("vermögensberater"),
 			valid: true,
 		},
 		{
-			in:    TLD("VERMÖGENSBERATER"),
+			in:    FromString("VERMÖGENSBERATER"),
 			valid: true,
 		},
 		{
-			in:    TLD("vermögensBERATER"),
+			in:    FromString("vermögensBERATER"),
 			valid: true,
 		},
 		{
-			in:    TLD("öermögensberateö"),
+			in:    FromString("öermögensberateö"),
 			valid: false,
 		},
 	}
@@ -199,6 +199,38 @@ func TestTLD_IsValid(t *testing.T) {
 	for i, tc := range cases {
 		t.Run(fmt.Sprintf("test case %d", i+1), func(t *testing.T) {
 			if tc.in.IsValid() != tc.valid {
+				t.Fail()
+			}
+		})
+	}
+}
+
+func TestTLD_IsValidString(t *testing.T) {
+	cases := []struct {
+		in    string
+		valid bool
+	}{
+		{
+			in:    "apa",
+			valid: false,
+		},
+		{
+			in:    "APA",
+			valid: false,
+		},
+		{
+			in:    "se",
+			valid: true,
+		},
+		{
+			in:    "SE",
+			valid: true,
+		},
+	}
+
+	for i, tc := range cases {
+		t.Run(fmt.Sprintf("test case %d", i+1), func(t *testing.T) {
+			if IsValid(tc.in) != tc.valid {
 				t.Fail()
 			}
 		})

@@ -18,11 +18,25 @@ A generated file with all current TLDs from IANA can be used for offline
 validation. To update the list run `go generate ./...`.
 
 ```go
-tld := FromDomanName("www.github.कॉम")
-
 // Offline validation.
+tld := FromDomanName("www.github.कॉम")
 if !tld.IsValid() {
     fmt.Printf("Invalid TLD: %s\n", tld.AsPunycode())
+}
+
+tld = FromString("कॉम")
+if !tld.IsValid() {
+    fmt.Printf("Invalid TLD: %s\n", tld.LowerString())
+}
+
+tld = TLD("xn--11b4c3d")
+if !tld.IsValid() {
+    fmt.Printf("Invalid TLD: %s\n", tld.AsUnicode())
+}
+
+// Quick validation
+if IsValid("कॉम") {
+    fmt.Printf("TLD is valid")
 }
 
 // Online validation.

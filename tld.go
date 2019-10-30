@@ -47,6 +47,11 @@ func (t TLD) AsPunycode() string {
 	return punycode
 }
 
+// IsValid will validate a TLD by passing a string.
+func IsValid(s string) bool {
+	return FromString(s).IsValid()
+}
+
 // FromDomainName returns the TLD from a host name or domain name.
 func FromDomainName(name string) TLD {
 	parts := strings.Split(name, ".")
@@ -56,4 +61,9 @@ func FromDomainName(name string) TLD {
 	}
 
 	return TLD(parts[len(parts)-1])
+}
+
+// FromString returns the TLD from a string.
+func FromString(s string) TLD {
+	return TLD(s)
 }
