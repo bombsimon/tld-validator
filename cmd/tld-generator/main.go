@@ -28,7 +28,7 @@ import (
 
 const (
 {{ range $n, $t := .normalised -}}
-	{{ $n }} TLD = "{{ $t }}"
+	{{ $n }} TLD = "{{ $t.punicode }}"{{ if $t.is_punycode }} // {{ $t.unicode }} {{ end }}
 {{ end -}}
 )
 
@@ -51,12 +51,16 @@ func main() {
 	var (
 		iana       = tld.NewIANA()
 		tlds       = iana.All()
-		normalised = map[string]string{}
+		normalised = map[string]map[string]interface{}{}
 	)
 
 	for _, t := range tlds {
 		n := strings.ReplaceAll(t.String(), "-", "_")
-		normalised[n] = t.String()
+		normalised[n] = map[string]interface{}{
+			"punicode":    t.String(),
+			"unicode":     t.AsUnicode(),
+			"is_punycode": t.LowerString() != t.AsUnicode(),
+		}
 	}
 
 	args := map[string]interface{}{
