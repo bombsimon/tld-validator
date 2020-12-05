@@ -1,0 +1,46 @@
+name: Generate TLD list
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    name: Go generate
+    runs-on: ubuntu-latest
+
+    env:
+      CGO_ENABLED: 0
+
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.13
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        ref: ${{ github.head_ref }}
+
+    - name: Run go generate ./...
+      run: go generate ./...
+
+    - name: Check if we have a diff to commit
+      id: diff
+      run: |
+        echo ::set-output name=DIFF_LINES::$(git diff --numstat tld.gen.go | awk '{ print $1 + $2; }')
+
+    - name: Commit changes
+      if: ${{ steps.diff.outputs.DIFF_LINES > 2 }}
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: (auto) Update TLD list
+        commit_user_name: Simon Sawert
+        commit_user_email: simon@sawert.se
+        file_pattern: tld.gen.go
+        branch: ${{ github.head_ref }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
