@@ -49,7 +49,7 @@ func (t TLD) IsValid() bool {
 
 func main() {
 	var (
-		iana       = tld.NewIANA()
+		iana       = tld.MustNewIANA()
 		tlds       = iana.All()
 		normalised = map[string]map[string]interface{}{}
 	)

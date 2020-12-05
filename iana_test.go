@@ -48,7 +48,7 @@ func TestIANA_IsValid(t *testing.T) {
 		},
 	}
 
-	iana := NewIANA()
+	iana := MustNewIANA()
 
 	for i, tc := range cases {
 		t.Run(fmt.Sprintf("test case %d", i+1), func(t *testing.T) {

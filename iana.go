@@ -27,7 +27,7 @@ type IANA struct {
 
 // NewIANA will create a new IANA with a default client and do an initial
 // refresh to get all the current TLDs.
-func NewIANA() *IANA {
+func NewIANA() (*IANA, error) {
 	v := &IANA{
 		client: &http.Client{
 			Timeout: 10 * time.Second,
@@ -38,10 +38,20 @@ func NewIANA() *IANA {
 	}
 
 	if err := v.Refresh(); err != nil {
+		return nil, err
+	}
+
+	return v, nil
+}
+
+// MustNewIANA will create a new IANA and panic if it fails.
+func MustNewIANA() *IANA {
+	i, err := NewIANA()
+	if err != nil {
 		panic(err)
 	}
 
-	return v
+	return i
 }
 
 // Refresh will perform a HTTP request to the IANA web page listing all
