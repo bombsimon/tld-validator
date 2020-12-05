@@ -24,6 +24,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         ref: ${{ github.head_ref }}
+        fetch-depth: 0
 
     - name: Run go generate ./...
       run: go generate ./...
@@ -32,7 +33,7 @@ jobs:
       id: diff
       run: |
         echo ::set-output name=DIFF_LINES::$(git diff --numstat tld.gen.go | awk '{ print $1 + $2; }')
-        echo ::set-output name=NEXT_VERSION::$(git tag | tail -1 | tr -d 'v' | awk -F'.' '{printf "v%d.%d.%d", $1, $2, $3 + 1}')
+        echo ::set-output name=NEXT_VERSION::$(git tag | tail -1 | awk -F'.' '{printf "%s.%d.%d", $1, $2, $3 + 1}')
         echo ::set-output name=ADDED::$(git diff $(git tag | tail -1) tld.gen.go | awk '/^\+.+TLD =/ {gsub(/"/, "", $5); {print "* " $5}}')
         echo ::set-output name=REMOVED::$(git diff $(git tag | tail -1) tld.gen.go | awk '/^\-.+TLD =/ {gsub(/"/, "", $5); {print "* " $5}}')
 
@@ -55,11 +56,12 @@ jobs:
         tag_name: ${{ steps.diff.outputs.NEXT_VERSION }}
         release_name: ${{ steps.diff.outputs.NEXT_VERSION }}
         body: |
-          Update list of TLDs
+          Automatic update of TLD list
+
           Added:
-            ${{ steps.diff.outputs.ADDED }}
+          ${{ steps.diff.outputs.ADDED }}
 
           Removed:
-            ${{ steps.diff.outputs.REMOVED }}
+          ${{ steps.diff.outputs.REMOVED }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
