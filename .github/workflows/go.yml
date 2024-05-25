@@ -1,5 +1,5 @@
 ---
-name: Go test and lind
+name: Go test and lint
 
 on:
   push:
