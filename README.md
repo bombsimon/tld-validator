@@ -1,4 +1,4 @@
-# Go TLD Validator
+# Go TLD Validator [![Go Reference](https://pkg.go.dev/badge/github.com/bombsimon/tld-validator.svg)](https://pkg.go.dev/github.com/bombsimon/tld-validator)
 
 A proper way to work with top level domains by validating towards
 [IANA](https://data.iana.org/TLD/tlds-alpha-by-domain.txt) TLD list. Whenever a
