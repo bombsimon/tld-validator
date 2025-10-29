@@ -1,4 +1,4 @@
-# Go TLD Validator
+# Go TLD Validator [![Go Reference](https://pkg.go.dev/badge/github.com/bombsimon/tld-validator.svg)](https://pkg.go.dev/github.com/bombsimon/tld-validator)
 
 A proper way to work with top level domains by validating towards
 [IANA](https://data.iana.org/TLD/tlds-alpha-by-domain.txt) TLD list. Whenever a
@@ -10,7 +10,7 @@ the valid storage concurrently.
 
 The TLD type makes it easy to convert between unicode and punycode for easier
 handling and validation. A TLD may be retreived from a domain or host name by
-using `FromDomanName()`.
+using `FromDomainName()`.
 
 ## Usage
 
@@ -19,7 +19,7 @@ validation. To update the list run `go generate ./...`.
 
 ```go
 // Offline validation.
-tld := FromDomanName("www.github.कॉम")
+tld := FromDomainName("www.github.कॉम")
 if !tld.IsValid() {
     fmt.Printf("Invalid TLD: %s\n", tld.AsPunycode())
 }
@@ -34,15 +34,15 @@ if !tld.IsValid() {
     fmt.Printf("Invalid TLD: %s\n", tld.AsUnicode())
 }
 
-// Quick validation
+// Quick validation.
 if IsValid("कॉम") {
     fmt.Printf("TLD is valid")
 }
 
 // Online validation.
-iana := NewIANA()
+iana, _ := NewIANA()
 
-if !iana.IsValid(tld) {}
+if !iana.IsValid(tld) {
     fmt.Printf("Invalid TLD: %s\n", tld.AsPunycode())
 }
 ```
